@@ -13,7 +13,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (!session) {
-      navigate("/register", { viewTransition: true })
+      navigate("/login", { viewTransition: true })
     }
   }, [session])
 
