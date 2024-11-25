@@ -1,5 +1,7 @@
+import { Button } from "@/components/ui/button"
 import { useQuery } from "@tanstack/react-query"
-import { useCallback, useEffect, useState } from "react"
+import { RefreshCwIcon } from "lucide-react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Map, { Layer, MapMouseEvent, Marker, Source } from "react-map-gl"
 
 // Asegúrate de reemplazar esto con tu token de Mapbox
@@ -65,14 +67,35 @@ export default function SecurePath() {
     queryFn: () => getRoute(startPoint!, endPoint!),
     enabled: Boolean(startPoint && endPoint)
   })
+  const mapRef = useRef<mapboxgl.Map | null>(null)
+
+
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.resize()
+    }
+  }, [])
+
+  function refresh(){
+    setStartPoint(null)
+    setEndPoint(null)
+  }
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
+    <>
+      
+    <div className="fixed inset-0 z-0">
+    <Button className="absolute top-20 right-4 z-50" onClick={refresh}><RefreshCwIcon className="size-4"/></Button>
       <Map
         {...viewport}
+        ref={instance => {
+          mapRef.current = instance && instance.getMap()
+        }}
         onMove={evt => setViewport(evt.viewState)}
         mapboxAccessToken={MAPBOX_TOKEN}
-        mapStyle="mapbox://styles/mapbox/streets-v11"
+        mapStyle="mapbox://styles/mapbox/streets-v12"
+        
+        style={{ width: "100%", height: "100%" }}
         onClick={handleClick}
       >
         {startPoint && (
@@ -96,5 +119,6 @@ export default function SecurePath() {
         )}
       </Map>
     </div>
+    </>
   )
 }

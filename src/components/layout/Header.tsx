@@ -12,7 +12,7 @@ export default function Header({ setIsSidebarOpen }: HeaderProps) {
         className="text-2xl cursor-pointer"
         onClick={() => setIsSidebarOpen(prev => !prev)}
       />
-      <h1 className="text-lg font-bold">Ciudadano</h1>
+      <h1 className="text-lg font-bold">AlertaICA</h1>
       <Link to="notifications">
         <MdNotifications className="text-2xl" />
       </Link>
